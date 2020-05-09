@@ -1,4 +1,5 @@
 import boto3
+import json
 
 
 class S3Utils:
@@ -11,9 +12,10 @@ class S3Utils:
         -- remove all the objects under a given bucket name
     """
 
-    def __init__(self, region_name, bucket_name):
+    def __init__(self, region_name, bucket_name, file_name):
         self.region_name = region_name
         self.bucket_name = bucket_name
+        self.file_name = file_name
 
     def create_s3_bucket(self):
         s3_client = boto3.client('s3', region_name=self.region_name)
@@ -23,11 +25,11 @@ class S3Utils:
 
     def upload_a_file(self):
         s3_resource = boto3.resource("s3")
-        first_object = s3_resource.Object(self.bucket_name, "secrets.txt")
-        first_object.upload_file("./secrets.txt", ExtraArgs={'ServerSideEncryption': 'AES256'})
+        first_object = s3_resource.Object(self.bucket_name, self.file_name)
+        first_object.upload_file("./" + self.file_name, ExtraArgs={'ServerSideEncryption': 'AES256'})
 
 
 if __name__ == '__main__':
-    s3Util = S3Utils("ap-south-1", "my-twitter-secrets-bucket")
+    s3Util = S3Utils("<your_region_name>", "<bucket_name>", "<file_name>")
     # s3Util.create_s3_bucket()
     # s3Util.upload_a_file()
