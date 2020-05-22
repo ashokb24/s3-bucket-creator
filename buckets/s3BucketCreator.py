@@ -1,7 +1,6 @@
 import boto3
 import json
 
-
 class S3Utils:
     """
         Author: Ashok Bhadrappa
@@ -26,10 +25,11 @@ class S3Utils:
     def upload_a_file(self):
         s3_resource = boto3.resource("s3")
         first_object = s3_resource.Object(self.bucket_name, self.file_name)
-        first_object.upload_file("./" + self.file_name, ExtraArgs={'ServerSideEncryption': 'AES256'})
+        first_object.upload_file("./"+self.file_name, ExtraArgs={'ServerSideEncryption': 'AES256'})
+
 
 
 if __name__ == '__main__':
-    s3Util = S3Utils("<your_region_name>", "<bucket_name>", "<file_name>")
+    s3Util = S3Utils("ap-south-1", "my-twitter-secrets-bucket", "twitter_creds.json")
     # s3Util.create_s3_bucket()
-    # s3Util.upload_a_file()
+    s3Util.upload_a_file()
